@@ -35,7 +35,7 @@ try:
     valores_nulos = df.isnull().sum().reset_index()
     valores_nulos.columns = ['Columnas', 'Número de Valores Nulos']
     valores_nulos['Porcentaje nulos'] = ((valores_nulos["Número de Valores Nulos"] / len(df)) * 100).round(2)
-    st.subheader("Calcular el número de valores nulos por columna", valores_nulos.sort_values(by="Número de Valores Nulos", ascending=False))
+    st.write("Calcular el número de valores nulos por columna", valores_nulos.sort_values(by="Número de Valores Nulos", ascending=False))
 
     # Paso 2: Cálculo del porcentaje de filas con atributos nulos
     def calcular_porcentaje_filas_nulas(df):
