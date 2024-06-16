@@ -11,7 +11,6 @@ plotly-express
 # Modelado y computación
 scikit-learn
 scipy
-ortools
 
 # APIs y scripts
 wandb
@@ -26,3 +25,8 @@ geopandas
 chart-studio
 nltk
 kaggle
+
+altair<5
+
+protobuf==3.20.3
+pydeck==0.7.1

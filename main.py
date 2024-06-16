@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import requests
 import seaborn as sns
+import streamlit as st
 
 titanicorignal = pd.read_csv("titanic.csv")
 titanicorignal
@@ -34,10 +35,10 @@ import plotly.express as px
 valores_nulos = df.isnull().sum().reset_index()
 valores_nulos.columns = ['Columnas', 'Número de Valores Nulos']
 
-# Definir colores personalizados para las barras
+# Define colores personalizados para las barras
 colores = ['#1f77b4' if col == 'Age' else '#9467bd' if col == 'Cabin' else '#2ca02c' for col in valores_nulos['Columnas']]
 
-# Crear el gráfico de barras interactivo
+# Crea el gráfico de barras
 fig = px.bar(
     valores_nulos,
     x='Columnas',
@@ -48,7 +49,7 @@ fig = px.bar(
     template='plotly_white'
 )
 
-# Personalizar el diseño del gráfico
+# Diseño del gráfico: dimensión, colores, fuentes de lo ti1tulos etc.
 fig.update_traces(textposition='outside', marker=dict(color=colores, line=dict(color='black', width=1.5)))
 fig.update_layout(
     width=800,  # Ajustar ancho del gráfico
