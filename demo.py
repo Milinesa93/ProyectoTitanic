@@ -14,6 +14,16 @@ from urllib.error import URLError
 
 st.set_page_config(page_title= "Proyecto Titanic - Milagros Vidal - Upgrade",
                    layout="wide")
+st.sidebar.header("Índice")
+indice_items = [
+    "Datos crudos",
+    "Valores nulos",
+    "Número de pasajeros embarcados",
+    "Distribución de sexos",
+    "Supuestos"
+]
+
+selected_item = st.sidebar.selectbox("Selecciona una sección:", indice_items)
 
 try:
     df = pd.read_csv("titanic.csv")
@@ -27,81 +37,6 @@ try:
     st.title(":ship: 🧊Titanic")
     st.subheader("Bootcamp Data Analytics by Upgrade")
     st.markdown("##")
-    
-    st.sidebar.header("Índice")
-    st.sidebar.header("Índice")
-    supuestos = [
-        "1. La mayoría de los pasajeros de primera clase sobrevivieron.",
-        "2. Las mujeres y niños tuvieron mayores tasas de supervivencia.",
-        "3. Los pasajeros registrados sin cabina, tuvieron menos probabilidad de sobrevivir.",
-        "4. La tarifa del billete está correlacionada con la probabilidad de supervivencia.",
-        "5. Los pasajeros de mayor edad tenían menor probabilidad de sobrevivir.",
-        "6. Sobrevivieron los hombres que pagaron más por su boleto.",
-        "7. El hombre que más pagó sobrevivió ante la mujer que menos pagó."
-    ]
-
-    selected_supuesto = st.sidebar.selectbox("Selecciona un supuesto:", supuestos)
-
-    st.write("### Supuesto seleccionado:")
-    st.write(selected_supuesto)
-
-    if selected_supuesto == "1. La mayoría de los pasajeros de primera clase sobrevivieron.":
-        survival_by_class = df.groupby('Pclass')['Survived'].mean() * 100
-        fig, ax = plt.subplots()
-        bars = ax.bar(survival_by_class.index, survival_by_class.values)
-        ax.set_title('Supervivencia por clase')
-        ax.set_xlabel('Clase')
-        ax.set_ylabel('Porcentaje de sobrevivientes')
-        ax.bar_label(bars, fmt='%.1f%%')
-        st.pyplot(fig)
-        conclusion = "La mayoría de los pasajeros de primera clase no sobrevivieron." if survival_by_class.loc[1] < 50 else "La mayoría de los pasajeros de primera clase sobrevivieron."
-        explanation = f"La tasa de supervivencia de los pasajeros de primera clase es del {survival_by_class.loc[1]:.2f}%."
-        st.write(conclusion)
-        st.write(explanation)
-
-    elif selected_supuesto == "2. Las mujeres y niños tuvieron mayores tasas de supervivencia.":
-        df['Child'] = df['Age'] < 18
-        survival_by_sex_age = df.groupby(['Sex', 'Child'])['Survived'].mean().unstack().fillna(0) * 100
-        survival_by_sex_age.index = ['Hombres', 'Mujeres']
-        survival_by_sex_age.columns = ['Adultos', 'Niños']
-        fig, ax = plt.subplots()
-        survival_by_sex_age.plot(kind='bar', stacked=True, ax=ax)
-        ax.set_title('Supervivencia por sexo y edad')
-        ax.set_xlabel('Sexo')
-        ax.set_ylabel('Tasa de supervivencia (%)')
-        for container in ax.containers:
-            ax.bar_label(container, fmt='%.1f%%')
-        st.pyplot(fig)
-        
-        women_survival_rate = survival_by_sex_age.loc['Mujeres'].mean()
-        children_survival_rate = survival_by_sex_age.loc[:, 'Niños'].mean()
-        men_survival_rate = survival_by_sex_age.loc['Hombres', 'Adultos']
-        
-        if women_survival_rate > men_survival_rate and children_survival_rate > men_survival_rate:
-            conclusion = "Las mujeres y los niños tuvieron mayores tasas de supervivencia."
-            explanation = (f"La tasa de supervivencia de las mujeres es del {women_survival_rate:.2f}%, "
-                        f"y la de los niños es del {children_survival_rate:.2f}%, ambos mayores que la de los hombres adultos que es del {men_survival_rate:.2f}%.")
-        else:
-            conclusion = "Las mujeres y los niños no tuvieron mayores tasas de supervivencia."
-            explanation = (f"La tasa de supervivencia de las mujeres es del {women_survival_rate:.2f}%, "
-                        f"y la de los niños es del {children_survival_rate:.2f}%, pero no superan la de los hombres adultos que es del {men_survival_rate:.2f}%.")
-        
-        st.write(conclusion)
-        st.write(explanation)
-
-    elif selected_supuesto == "3. Los pasajeros registrados sin cabina, tuvieron menos probabilidad de sobrevivir.":
-        df['HasCabin'] = df['Cabin'].notna()
-        survival_by_cabin = df.groupby('HasCabin')['Survived'].mean() * 100
-
-        # Asegurar que 'False' y 'True' estén presentes en survival_by_cabin
-        survival_by_cabin = survival_by_cabin.reindex([False, True], fill_value=0)
-        
-        fig, ax = plt.subplots()
-        bars = ax.bar([0, 1], survival_by_cabin.values, tick_label=['Sin cabina', 'Con cabina'])
-        ax.set_title('Supervivencia según registro de cabina')
-        ax.set_xlabel('Registro de cabina')
-        ax.set_ylabel('Porcentaje de sobrevivientes')
-        ax.bar_label(b​⬤
     
     st.write("### Datos crudos", df)
     st.title("Valores nulos de las columnas")
@@ -371,7 +306,7 @@ try:
             <p style="font-size: 36px;">${highest_fare}</p>
         </div>
     </div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
     # Botón para mostrar información adicional y reproducir audio
     if st.button('Mostrar detalles'):
