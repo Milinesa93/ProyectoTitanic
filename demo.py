@@ -12,8 +12,25 @@ import statistics
 
 from urllib.error import URLError
 
+
+
 st.set_page_config(page_title= "Proyecto Titanic - Milagros Vidal - Upgrade",
                    layout="wide")
+
+st.markdown(
+    """
+    <style>
+    .css-18e3th9 {
+        background-color: #03163d;
+    }
+    .css-1d391kg {
+        background-color: #34386f;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.sidebar.header("Índice")
 indice_items = [
     "Datos crudos",
@@ -70,13 +87,6 @@ try:
     for columna, porcentaje in porcentajes_nulos.items():
         st.write(f"{columna}: {porcentaje}%")
         st.progress(porcentaje / 100)
-
-    # Tarjetas informativas
-    st.write("### Tarjetas Informativas")
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Cabin", f"{porcentajes_nulos['Cabin']}%", delta=None)
-    col2.metric("Age", f"{porcentajes_nulos['Age']}%", delta=None)
-    col3.metric("Embarked", f"{porcentajes_nulos['Embarked']}%", delta=None)
 
     # Calcular el número de valores nulos por columna
     valores_nulos = df.isnull().sum().reset_index()
