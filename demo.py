@@ -71,7 +71,7 @@ try:
         st.write(f"{columna}: {porcentaje}%")
         st.progress(porcentaje / 100)
 
-    # Tarjetas informativas usando st.metric
+    # Tarjetas informativas
     st.write("### Tarjetas Informativas")
     col1, col2, col3 = st.columns(3)
     col1.metric("Cabin", f"{porcentajes_nulos['Cabin']}%", delta=None)
@@ -82,10 +82,10 @@ try:
     valores_nulos = df.isnull().sum().reset_index()
     valores_nulos.columns = ['Columnas', 'Número de Valores Nulos']
 
-    # Definir colores personalizados para las barras
+    # Colores de la barra
     colores = ['#1f77b4' if col == 'Age' else '#9467bd' if col == 'Cabin' else '#2ca02c' for col in valores_nulos['Columnas']]
 
-    # Crear el gráfico de barras interactivo
+    # Crear el gráfico de barras
     data_nulos = px.bar(
         valores_nulos,
         x='Columnas',
@@ -242,8 +242,6 @@ try:
     lowest_fare = df['Fare'].round(0).astype(int).min()
     highest_fare = df['Fare'].round(0).astype(int).max()    
     
-
-    # Línea animada
     st.markdown("""
         <style>
         @keyframes wave {
@@ -340,7 +338,7 @@ try:
     # Crear un diccionario de colores basados en las selecciones
     color_map = {'Mujer': color_mujer, 'Hombre': color_hombre}
 
-    # Crear gráfico de pastel interactivo con Plotly
+    # Crear gráfico de pastel
     fig = px.pie(sex_distribucion, values='Cantidad de pasajeros', names='Sexo',
                 title='Distribución de Sexos de Personas Embarcadas en el Titanic',
                 color='Sexo', color_discrete_map=color_map)
@@ -348,14 +346,14 @@ try:
     # mostrar porcentajes
     fig.update_traces(textinfo='percent+label', hoverinfo='label+percent+value')
 
-    # Mostrar gráfico en Streamlit
+    # Mostrar gráfico
     st.plotly_chart(fig)
 
     # Calcular el número total de sobrevivientes (donde 'Survived' es 1)
     total_survivors = df[df['Survived'] == 1].shape[0]
     st.write(f"El número de total de sobrevivientes: {total_survivors}")
     
-    # Filtrar el DataFrame para obtener solo los sobrevivientes
+    # Cuántos sobrevivientes?
     survivors_df = df[df['Survived'] == 1]
 
     # Contar el número de sobrevivientes por sexo
@@ -373,12 +371,11 @@ try:
     hombres_sobrevivientes = survivors_by_sex.get('hombres', 0)
     st.write(f"El número de sobrevivientes por sexo: Mujer {mujeres_sobrevivientes} y Hombre {hombres_sobrevivientes}")
 
-    # Crear el gráfico de pastel con tamaño reducido
+    # Crear el gráfico de pastel
     fig, ax = plt.subplots(figsize=(2, 2))
     ax.pie(percentages_by_sex, labels=percentages_by_sex.index, autopct='%1.1f%%', colors=['#ff9999','#66b3ff'])
     ax.set_title('Porcentaje de sobrevivientes por sexo')
 
-    # Mostrar el gráfico en Streamlit
     st.pyplot(fig)
 
 
